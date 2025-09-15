@@ -24,8 +24,8 @@ public class MessageService {
 
         //Cria o objeto user
         MessageModel user = new MessageModel();
-        user.setName(data.name);
-        user.setMessage(data.message);
+        user.setName(data.getName());
+        user.setMessage(data.getMessage());
 
         //Salva no banco de dados
         MessageModel savedUser = userRepository.save(user);

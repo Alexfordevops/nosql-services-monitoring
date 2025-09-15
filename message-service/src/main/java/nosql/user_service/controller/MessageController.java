@@ -20,8 +20,8 @@ public class MessageController {
     private MessageService userService;
 
     @PostMapping("/setMessage")
-    public ResponseEntity<UserResponseDto> setMessage(UserRequestDto data){
-        System.out.println(data.message);
+    public ResponseEntity<UserResponseDto> setMessage(@RequestBody UserRequestDto data){
+        System.out.println(data.getMessage());
         UserResponseDto response = userService.setMessage(data);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -33,6 +33,7 @@ public class MessageController {
         List<MessageResponseDto> response = userService.getMessagesByUser(name);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
     @GetMapping("/getUsersAndMessages")
     public ResponseEntity<List<UserResponseDto>> getUsersAndMessages(){
         List<UserResponseDto> response = userService.getUsersAndMessages();

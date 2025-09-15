@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: message-db-config
+  namespace: nosql
+data:
+  POSTGRES_DB: message_db

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-db
+  namespace: nosql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: message-db
+  template:
+    metadata:
+      labels:
+        app: message-db
+    spec:
+      containers:
+        - name: message-db
+          image: postgres:16
+          envFrom:
+            - configMapRef:
+                name: message-db-config
+            - secretRef:
+                name: message-db-secret
+          volumeMounts:
+            - name: message-db-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: message-db-data
+          persistentVolumeClaim:
+            claimName: message-db-pvc
