@@ -1,0 +1,21 @@
+<div class="upload-container">
+  <h2>Upload de Imagem</h2>
+
+  <!-- Input para escolher arquivo -->
+  <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+
+  <!-- Preview -->
+  <div *ngIf="previewUrl" class="preview">
+    <p><strong>Pré-visualização:</strong></p>
+    <img [src]="previewUrl" alt="Preview da imagem" />
+    <button (click)="upload()">Enviar</button>
+  </div>
+
+  <!-- Resultado do upload -->
+  <div *ngIf="uploadResponse" class="upload-result">
+    <p>✅ Upload concluído!</p>
+    <p><strong>ID:</strong> {{uploadResponse.id}}</p>
+    <p><strong>Nome:</strong> {{uploadResponse.fileName}}</p>
+    <p><strong>Tipo:</strong> {{uploadResponse.contentType}}</p>
+  </div>
+</div>

@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ImageService {
@@ -75,5 +77,25 @@ public class ImageService {
                 contentType,
                 file.getLength()
         );
+    }
+
+    // Listar todas as imagens
+    public List<DownloadResponseDTO> listAllFiles() {
+        List<DownloadResponseDTO> files = new ArrayList<>();
+
+        for (GridFSFile file : gridFSBucket.find()) {
+            String contentType = file.getMetadata() != null
+                    ? file.getMetadata().getString("contentType")
+                    : "application/octet-stream";
+
+            files.add(new DownloadResponseDTO(
+                    file.getObjectId().toHexString(),
+                    file.getFilename(),
+                    contentType,
+                    file.getLength()
+            ));
+        }
+
+        return files;
     }
 }
