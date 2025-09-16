@@ -2,7 +2,10 @@ package nosql.image_service.service;
 
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
+import com.mongodb.client.gridfs.model.GridFSFile;
 import com.mongodb.client.gridfs.model.GridFSUploadOptions;
+import nosql.image_service.dto.DownloadResponseDTO;
+import nosql.image_service.dto.UploadResponseDTO;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,7 @@ public class ImageService {
     }
 
     //Upload da imagem para o MongoDB
-    public String uploadImage(MultipartFile file) throws IOException {
+    public UploadResponseDTO uploadImage(MultipartFile file) throws IOException {
 
         //Define metadados do arquivo (tipo MIME, ex: image/png, image/jpeg, etc.)
         GridFSUploadOptions options = new GridFSUploadOptions()
@@ -39,7 +42,7 @@ public class ImageService {
         }
 
         //Retorna o ID do arquivo salvo como String
-        return fileId.toHexString();
+        return new UploadResponseDTO(fileId.toHexString(), file.getOriginalFilename(), file.getContentType());
     }
 
     //Download da imagem para o MongoDB
@@ -57,14 +60,20 @@ public class ImageService {
     }
 
     //Buscar o contentType da imagem nos metadados
-    public String getContentType(String id) {
-
+    public DownloadResponseDTO getFileInfo(String id) {
         var fileId = new ObjectId(id);
-        var file = gridFSBucket.find(new Document("_id", fileId)).first();
+        GridFSFile file = gridFSBucket.find(new Document("_id", fileId)).first();
 
-        if (file != null && file.getMetadata() != null) {
-            return file.getMetadata().getString("contentType");
+        if (file == null) {
+            return null;
         }
-        return "application/octet-stream"; // fallback genérico
+
+        String contentType = file.getMetadata() != null ? file.getMetadata().getString("contentType") : "application/octet-stream";
+        return new DownloadResponseDTO(
+                file.getObjectId().toHexString(),
+                file.getFilename(),
+                contentType,
+                file.getLength()
+        );
     }
 }

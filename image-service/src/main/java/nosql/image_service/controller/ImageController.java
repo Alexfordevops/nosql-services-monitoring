@@ -1,5 +1,7 @@
 package nosql.image_service.controller;
 
+import nosql.image_service.dto.DownloadResponseDTO;
+import nosql.image_service.dto.UploadResponseDTO;
 import nosql.image_service.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,28 +21,42 @@ public class ImageController {
     private ImageService imageService;
 
     @PostMapping("/uploadImage")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException{
+    public ResponseEntity<UploadResponseDTO> uploadImage(@RequestParam("file") MultipartFile file) throws IOException{
 
         // Chama o service para salvar a imagem
-        String fileId = imageService.uploadImage(file);
+        UploadResponseDTO fileId = imageService.uploadImage(file);
 
         // Retorna o ID para o cliente (Angular usará para download depois)
         return ResponseEntity.status(HttpStatus.OK).body(fileId);
     }
 
     @GetMapping("/downloadImage/{id}")
-    public ResponseEntity<byte[]> download(@PathVariable String id) throws IOException {
+    public ResponseEntity<byte[]> downloadImage(@PathVariable String id) throws IOException {
 
-        // Recupera os bytes da imagem
+        //Obtém a imagem
         byte[] data = imageService.downloadImage(id);
 
-        // Recupera o tipo MIME original dos metadados
-        String contentType = imageService.getContentType(id);
+        //Obtém os metadados da imagem
+        DownloadResponseDTO info = imageService.getFileInfo(id);
+        if (info == null) {
+            return ResponseEntity.notFound().build();
+        }
 
-        // Retorna a resposta HTTP com cabeçalhos corretos
-        return ResponseEntity.status(HttpStatus.OK)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"image\"")
-                .contentType(MediaType.parseMediaType(contentType))
+        //Retorna a imagem com os metadados
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + info.getFileName() + "\"")
+                .contentType(MediaType.parseMediaType(info.getContentType()))
                 .body(data);
+    }
+
+    //Retorna apenas os metadados do arquivo
+    @GetMapping("/{id}/info")
+    public ResponseEntity<DownloadResponseDTO> getFileInfo(@PathVariable String id) {
+
+        DownloadResponseDTO info = imageService.getFileInfo(id);
+        if (info == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(info);
     }
 }
