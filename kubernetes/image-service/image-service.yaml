@@ -5,7 +5,7 @@ metadata:
   namespace: nosql
 spec:
   selector:
-    app: image-api
+    app: image-service
   ports:
     - protocol: TCP
       port: 8080
