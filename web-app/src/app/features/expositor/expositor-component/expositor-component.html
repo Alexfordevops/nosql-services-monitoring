@@ -1,0 +1,10 @@
+<div *ngIf="image">
+  <img [src]="image.url" alt="{{image.fileInfo.fileName}}" />
+  <p>{{image.fileInfo.fileName}}</p>
+  <p>{{image.fileInfo.contentType}}, {{image.fileInfo.size}} bytes</p>
+</div>
+
+<div *ngIf="message">
+  <h4>{{message.name}}</h4>
+  <p>{{message.message}}</p>
+</div>

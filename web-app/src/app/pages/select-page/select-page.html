@@ -1,0 +1,12 @@
+<div class="select-page-layout">
+  <div class="left">
+    <app-gallery-component (imageSelected)="onImageSelected($event)"></app-gallery-component>
+  </div>
+  <div class="right">
+    <app-message-component (messageSelected)="onMessageSelected($event)"></app-message-component>
+  </div>
+</div>
+
+<div class="footer">
+  <button [disabled]="!selectedImage || !selectedMessage" (click)="goToView()">Visualizar</button>
+</div>

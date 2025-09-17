@@ -1,0 +1,13 @@
+<div class="messages-container">
+  <h3>Selecione uma mensagem</h3>
+
+  <div
+    class="message-card"
+    *ngFor="let msg of messages()"
+    [class.selected]="msg === selectedMessage"
+    (click)="selectMessage(msg)"
+  >
+    <div class="name">{{ msg.name }}</div>
+    <div class="text">{{ msg.message }}</div>
+  </div>
+</div>

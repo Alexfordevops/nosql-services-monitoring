@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: image-api
+  name: image-service
   namespace: nosql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: image-api
+      app: image-service
   template:
     metadata:
       labels:
-        app: image-api
+        app: image-service
     spec:
       containers:
-        - name: image-api
+        - name: image-service
           image: image-service:latest
           imagePullPolicy: IfNotPresent
           ports:

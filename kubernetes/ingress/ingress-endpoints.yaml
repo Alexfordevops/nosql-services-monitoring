@@ -10,7 +10,16 @@ spec:
   rules:
     - http:
         paths:
-          # APIs - sem rewrite
+          # Angular app
+          - path: /web
+            pathType: Prefix
+            backend:
+              service:
+                name: angular-app-service
+                port:
+                  number: 80
+
+          # APIs
           - path: /message
             pathType: Prefix
             backend:
@@ -18,15 +27,13 @@ spec:
                 name: gateway-service
                 port:
                   number: 8080
-
-          # Assets da Angular App
-          - path: /assets/
+          - path: /image
             pathType: Prefix
             backend:
               service:
-                name: angular-app-service
+                name: gateway-service
                 port:
-                  number: 80
+                  number: 8080
 
           # RabbitMQ
           - path: /rabbitmq
@@ -43,14 +50,5 @@ spec:
             backend:
               service:
                 name: monitoring-grafana
-                port:
-                  number: 80
-
-          # Angular
-          - path: /web
-            pathType: Prefix
-            backend:
-              service:
-                name: angular-app-service
                 port:
                   number: 80

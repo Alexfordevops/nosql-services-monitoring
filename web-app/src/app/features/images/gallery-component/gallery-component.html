@@ -1,0 +1,14 @@
+<div class="gallery-container">
+  <h3>Selecione uma imagem</h3>
+  <div class="gallery-grid">
+    <div
+      class="image-card"
+      *ngFor="let img of images()"
+      [class.selected]="selectedImage?.fileInfo?.id === img.fileInfo.id"
+      (click)="selectImage(img)"
+    >
+      <img [src]="img.url" alt="{{ img.fileInfo.fileName }}" />
+      <p>{{ img.fileInfo.fileName }}</p>
+    </div>
+  </div>
+</div>

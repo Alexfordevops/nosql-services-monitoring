@@ -1,0 +1,33 @@
+.gallery-container {
+  margin: 10px;
+}
+
+.gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-card {
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 4px;
+  text-align: center;
+  transition: transform 0.2s, border 0.2s;
+}
+
+.image-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.image-card:hover {
+  transform: scale(1.05);
+}
+
+.image-card.selected {
+  border-color: #4a90e2;
+}

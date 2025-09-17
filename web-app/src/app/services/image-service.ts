@@ -10,7 +10,7 @@ import {FileInfo} from '../interfaces/FileInfoInterface';
 export class ImageService {
 
   // URL base da API
-  private baseUrl = 'http:/192.168.56.14:30080/image';
+  private baseUrl = 'http://192.168.56.14:30080/image';
 
   constructor(private http: HttpClient) {}
 
