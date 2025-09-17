@@ -4,7 +4,7 @@
     <div
       class="image-card"
       *ngFor="let img of images()"
-      [class.selected]="selectedImage?.fileInfo?.id === img.fileInfo.id"
+      [class.selected]="img === selectedImage"
       (click)="selectImage(img)"
     >
       <img [src]="img.url" alt="{{ img.fileInfo.fileName }}" />

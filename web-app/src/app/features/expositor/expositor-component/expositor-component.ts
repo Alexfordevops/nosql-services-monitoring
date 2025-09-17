@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges, SimpleChanges, signal } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ImageWithUrl } from '../../../interfaces/ImageWithUrlInterface';
 import { MessageInterface } from '../../../interfaces/MessageInterface';
-import {ImageWithUrl} from '../../../interfaces/ImageWithUrlInterface';
 
 @Component({
   selector: 'app-expositor',
@@ -11,7 +11,6 @@ import {ImageWithUrl} from '../../../interfaces/ImageWithUrlInterface';
   styleUrls: ['./expositor-component.scss']
 })
 export class ExpositorComponent {
-
   @Input() image?: ImageWithUrl;
   @Input() message?: MessageInterface;
 }

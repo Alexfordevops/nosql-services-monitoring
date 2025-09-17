@@ -1,14 +1,8 @@
 import { Component, EventEmitter, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ImageService } from '../../../services/image-service';
 import { FileInfo } from '../../../interfaces/FileInfoInterface';
-import { map } from 'rxjs/operators';
-
-interface ImageWithUrl {
-  fileInfo: FileInfo;
-  url: SafeUrl;
-}
+import { ImageWithUrl } from '../../../interfaces/ImageWithUrlInterface';
 
 @Component({
   selector: 'app-gallery-component',
@@ -24,19 +18,16 @@ export class GalleryComponent implements OnInit {
 
   @Output() imageSelected = new EventEmitter<ImageWithUrl>();
 
-  constructor(private imageService: ImageService, private sanitizer: DomSanitizer) {}
+  constructor(private imageService: ImageService) {}
 
   ngOnInit(): void {
     this.imageService.listAll().subscribe({
       next: (res) => {
         res.forEach(fileInfo => {
-          this.imageService.download(fileInfo.id).pipe(
-            map(blob => {
-              const objectUrl = URL.createObjectURL(blob);
-              return { fileInfo, url: this.sanitizer.bypassSecurityTrustUrl(objectUrl) } as ImageWithUrl;
-            })
-          ).subscribe(imgWithUrl => {
-            this.images.set([...this.images(), imgWithUrl]);
+          this.imageService.download(fileInfo.id).subscribe(blob => {
+            const objectUrl = URL.createObjectURL(blob); // cria URL do blob
+            const imgWithUrl: ImageWithUrl = { fileInfo, url: objectUrl };
+            this.images.set([...this.images(), imgWithUrl]); // atualiza signal
           });
         });
       },
@@ -46,6 +37,6 @@ export class GalleryComponent implements OnInit {
 
   selectImage(img: ImageWithUrl) {
     this.selectedImage = img;
-    this.imageSelected.emit(img);
+    this.imageSelected.emit(img); // envia imagem selecionada para o parent
   }
 }
