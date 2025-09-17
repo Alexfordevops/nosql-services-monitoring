@@ -1,0 +1,22 @@
+<div class="create-page-layout">
+  <h2>Adicionar Conteúdo</h2>
+
+  <div class="forms-container">
+    <!-- Upload de imagem -->
+    <div class="form-card">
+      <h3>Upload de Imagem</h3>
+      <app-upload-component></app-upload-component>
+    </div>
+
+    <!-- Formulário de mensagens -->
+    <div class="form-card">
+      <h3>Nova Mensagem</h3>
+      <app-message-form></app-message-form>
+    </div>
+  </div>
+
+  <!-- Rodapé com botão -->
+  <div class="footer">
+    <button class="btn-primary" (click)="goToSelect()">Finalizar e Ir para Seleção</button>
+  </div>
+</div>

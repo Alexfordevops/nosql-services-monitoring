@@ -1,10 +1,20 @@
-<div *ngIf="image">
-  <img [src]="image.url" alt="{{image.fileInfo.fileName}}" />
-  <p>{{image.fileInfo.fileName}}</p>
-  <p>{{image.fileInfo.contentType}}, {{image.fileInfo.size}} bytes</p>
-</div>
+<div class="expositor-container" *ngIf="image || message">
+  <!-- Imagem -->
+  <div *ngIf="image" class="image-section">
+    <img [src]="image.url" alt="{{image.fileInfo.fileName}}" />
 
-<div *ngIf="message">
-  <h4>{{message.name}}</h4>
-  <p>{{message.message}}</p>
+    <div class="image-meta">
+      <h4>📂 Informações da Imagem</h4>
+      <p><strong>Nome:</strong> {{ image.fileInfo.fileName }}</p>
+      <p><strong>Tipo:</strong> {{ image.fileInfo.contentType }}</p>
+      <p><strong>Tamanho:</strong> {{ image.fileInfo.size | number }} bytes</p>
+    </div>
+  </div>
+
+  <!-- Mensagem -->
+  <div *ngIf="message" class="message-section">
+    <h4>💬 Mensagem Selecionada</h4>
+    <p><strong>Autor:</strong> {{ message.name }}</p>
+    <p><strong>Conteúdo:</strong> {{ message.message }}</p>
+  </div>
 </div>

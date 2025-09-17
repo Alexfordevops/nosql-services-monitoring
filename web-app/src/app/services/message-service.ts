@@ -15,4 +15,8 @@ export class MessageService {
   public listAll(): Observable<MessageInterface[]>{
     return this.http.get<MessageInterface[]>(`${this.baseUrl}/getUsersAndMessages`);
   }
+
+  public create(message: MessageInterface): Observable<MessageInterface> {
+    return this.http.post<MessageInterface>(`${this.baseUrl}/setMessage`, message);
+  }
 }
