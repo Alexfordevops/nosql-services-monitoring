@@ -64,6 +64,11 @@ echo "Iniciando a instalação do Prometheus Stack..."
 helm install "$RELEASE_NAME" prometheus-community/kube-prometheus-stack --namespace "$NAMESPACE" --wait
 echo "Instalação do Prometheus Stack concluída com sucesso."
 
+echo "Aplicando arquivo de configuração no grafana para subpath /grafana no ingress"
+helm upgrade prometheus-stack prometheus-community/kube-prometheus-stack \
+  -n monitoring \
+  -f grafana-values.yaml
+  
 # --- Seção 4: Instruções Pós-Instalação ---
 echo ""
 echo "--- Instruções para Acessar o Grafana ---"
