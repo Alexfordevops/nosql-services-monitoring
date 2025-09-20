@@ -1,0 +1,37 @@
+# Configuração do Promtail para coletar logs do namespace "nosql"
+config:
+  clients:
+    - url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+
+  scrape_configs:
+    - job_name: kubernetes-pods-nosql
+      kubernetes_sd_configs:
+        - role: pod
+      # Filtra apenas pods do namespace "nosql"
+      relabel_configs:
+        - source_labels: [__meta_kubernetes_namespace]
+          regex: nosql
+          action: keep
+
+        # Adiciona labels úteis
+        - source_labels: [__meta_kubernetes_pod_name]
+          target_label: pod
+        - source_labels: [__meta_kubernetes_container_name]
+          target_label: container
+        - source_labels: [__meta_kubernetes_namespace]
+          target_label: namespace
+
+        # Path dos logs dos containers
+        - source_labels: [__meta_kubernetes_pod_container_name]
+          target_label: __path__
+          replacement: /var/log/containers/*$1*.log
+
+daemonset:
+  enabled: true
+  tolerations:
+    - key: "node-role.kubernetes.io/master"
+      effect: "NoSchedule"
+  securityContext:
+    runAsUser: 10001
+    runAsGroup: 10001
+    fsGroup: 10001
